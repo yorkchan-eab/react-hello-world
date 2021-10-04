@@ -1,0 +1,10 @@
+FROM react-hello-world:1.0.0 as build
+WORKDIR /app
+COPY . .
+
+FROM docker-registry2.k8s:5000/node:14.15.3-alpine as prod
+LABEL maintainer="EAB Systems"
+EXPOSE 3000
+COPY --from=build . .
+WORKDIR /usr/share/nginx/html/
+CMD ["sh", "-c", "nginx -g \"daemon off;\""]

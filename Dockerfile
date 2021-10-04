@@ -1,17 +1,7 @@
-FROM docker-registry2.k8s:5000/node:14.15.3-alpine as build
+FROM axa-hk-a-lake-runtime-docker.docker.artifactory.pink.ap-southeast-1.aws.openpaas.axa-cloud.com/hk-nodejs:14.17.5-rhel8.4-dt-nightly
+LABEL maintainer="EAB Systems"
+EXPOSE 5000:5000
 WORKDIR /app
 COPY . .
 RUN npm i
-RUN npm run build
-
-FROM nginx:stable-alpine
-LABEL maintainer="EAB Systems"
-EXPOSE 3000
-# RUN apk add --update nodejs npm
-# RUN npm i -g fs
-WORKDIR /usr/share/nginx/html/
-COPY --from=build /app/dist .
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-# COPY .env.js .
-# CMD ["sh", "-c", "cp -rf /app/configs . && node .env.js prod build && nginx -g \"daemon off;\""]
-CMD ["sh", "-c", "nginx -g \"daemon off;\""]
+CMD ["npm", "run", "serve"]
