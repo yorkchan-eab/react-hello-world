@@ -1,0 +1,7 @@
+FROM docker-registry2.k8s:5000/node:14.15.3-alpine
+LABEL maintainer="EAB Systems"
+EXPOSE 3000:3000
+WORKDIR /app
+COPY . .
+RUN npm i
+CMD ["npm", "run", "dev"]
